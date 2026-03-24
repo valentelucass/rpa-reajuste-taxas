@@ -1,8 +1,11 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
+set "ROOT_DIR=%~dp0"
+pushd "%ROOT_DIR%"
 set "APP_NAME=RPA-Tabela-cliente"
 set "DIST_DIR=dist\%APP_NAME%"
 set "EXE_NAME=%APP_NAME%.exe"
+set "SPEC_FILE=%ROOT_DIR%build.spec"
 set "INSTALLER_SCRIPT=installer\%APP_NAME%.iss"
 set "INSTALLER_DIR=dist\instalador"
 set "INSTALLER_NAME=%APP_NAME%-Setup.exe"
@@ -31,44 +34,52 @@ if exist "%INSTALLER_DIR%" (
 )
 
 echo.
-py -3.12 -m PyInstaller build.spec --clean --noconfirm
-
-if %ERRORLEVEL% EQU 0 (
-    if exist .env (
-        copy /Y .env "%DIST_DIR%\.env" >nul
-        echo   .env copiado para %DIST_DIR%\
-    )
-
-    call :resolver_iscc
-    if not defined ISCC_EXE (
-        call :instalar_inno_setup
-        call :resolver_iscc
-    )
-
-    if defined ISCC_EXE (
-        echo   Gerando instalador com Inno Setup...
-        "!ISCC_EXE!" "%INSTALLER_SCRIPT%"
-        if errorlevel 1 (
-            echo   Falha ao gerar o instalador.
-        ) else (
-            echo   Instalador em: %INSTALLER_DIR%\%INSTALLER_NAME%
-        )
-    ) else (
-        echo   Inno Setup nao encontrado. Instalador nao gerado.
-    )
-
-    echo.
-    echo ============================================
-    echo   Build concluido com sucesso!
-    echo   Executavel em: %DIST_DIR%\%EXE_NAME%
-    echo ============================================
-) else (
-    echo.
-    echo ============================================
-    echo   ERRO no build. Verifique os logs acima.
-    echo ============================================
+if not exist "%SPEC_FILE%" (
+    echo   Arquivo de spec nao encontrado: "%SPEC_FILE%"
+    goto :build_error
 )
 
+py -3.12 -m PyInstaller "%SPEC_FILE%" --clean --noconfirm
+if errorlevel 1 goto :build_error
+
+if exist .env (
+    copy /Y .env "%DIST_DIR%\.env" >nul
+    echo   .env copiado para %DIST_DIR%\
+)
+
+call :resolver_iscc
+if not defined ISCC_EXE (
+    call :instalar_inno_setup
+    call :resolver_iscc
+)
+
+if defined ISCC_EXE (
+    echo   Gerando instalador com Inno Setup...
+    "!ISCC_EXE!" "%INSTALLER_SCRIPT%"
+    if errorlevel 1 (
+        echo   Falha ao gerar o instalador.
+    ) else (
+        echo   Instalador em: %INSTALLER_DIR%\%INSTALLER_NAME%
+    )
+) else (
+    echo   Inno Setup nao encontrado. Instalador nao gerado.
+)
+
+echo.
+echo ============================================
+echo   Build concluido com sucesso!
+echo   Executavel em: %DIST_DIR%\%EXE_NAME%
+echo ============================================
+goto :fim
+
+:build_error
+echo.
+echo ============================================
+echo   ERRO no build. Verifique os logs acima.
+echo ============================================
+
+:fim
+popd
 endlocal
 if /I "%~1"=="--no-pause" goto :eof
 pause

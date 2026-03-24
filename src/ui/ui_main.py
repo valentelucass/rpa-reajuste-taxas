@@ -117,6 +117,7 @@ class JanelaPainelAutomacao(QMainWindow):
         layout_principal.addLayout(self._criar_grade_estatisticas())
         layout_principal.addWidget(self._criar_secao_progresso())
         layout_principal.addWidget(self._criar_secao_logs(), 1)
+        layout_principal.addWidget(self._criar_rodape())
 
     def _criar_cabecalho(self) -> QFrame:
         cartao = QFrame()
@@ -492,6 +493,66 @@ class JanelaPainelAutomacao(QMainWindow):
 
         layout.addLayout(paginacao)
         return cartao
+
+    def _criar_rodape(self) -> QFrame:
+        rodape = QFrame()
+        rodape.setObjectName("rodapePainel")
+
+        layout = QHBoxLayout(rodape)
+        layout.setContentsMargins(4, 14, 4, 0)
+        layout.setSpacing(24)
+
+        bloco_esquerdo = QWidget()
+        layout_esquerdo = QVBoxLayout(bloco_esquerdo)
+        layout_esquerdo.setContentsMargins(0, 0, 0, 0)
+        layout_esquerdo.setSpacing(4)
+
+        titulo = QLabel("RPA REAJUSTE TABELAS VIGENCIA")
+        titulo.setObjectName("rodapeTitulo")
+        descricao = QLabel(
+            "Automacao desktop para copia, vigencia e reajuste de tabelas."
+        )
+        descricao.setObjectName("rodapeTexto")
+        descricao.setWordWrap(True)
+        layout_esquerdo.addWidget(titulo)
+        layout_esquerdo.addWidget(descricao)
+
+        bloco_direito = QWidget()
+        bloco_direito.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        layout_direito = QVBoxLayout(bloco_direito)
+        layout_direito.setContentsMargins(0, 0, 0, 0)
+        layout_direito.setSpacing(4)
+
+        linha_autoria = QWidget()
+        layout_autoria = QHBoxLayout(linha_autoria)
+        layout_autoria.setContentsMargins(0, 0, 0, 0)
+        layout_autoria.setSpacing(4)
+        layout_autoria.addStretch(1)
+
+        rotulo_autoria = QLabel("Desenvolvido por")
+        rotulo_autoria.setObjectName("rodapeTexto")
+        link_autoria = QLabel(
+            '<a href="https://www.linkedin.com/in/dev-lucasandrade/" '
+            'style="color: #21478A; text-decoration: none; font-weight: 700;">'
+            "@valentelucass</a>"
+        )
+        link_autoria.setTextFormat(Qt.RichText)
+        link_autoria.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        link_autoria.setOpenExternalLinks(True)
+        link_autoria.setCursor(Qt.PointingHandCursor)
+        layout_autoria.addWidget(rotulo_autoria)
+        layout_autoria.addWidget(link_autoria)
+
+        suporte = QLabel("Suporte: lucasmac.dev@gmail.com")
+        suporte.setObjectName("rodapeTexto")
+        suporte.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+
+        layout_direito.addWidget(linha_autoria)
+        layout_direito.addWidget(suporte)
+
+        layout.addWidget(bloco_esquerdo, 1)
+        layout.addWidget(bloco_direito, alignment=Qt.AlignRight | Qt.AlignVCenter)
+        return rodape
 
     def iniciar_automacao(self) -> None:
         if self.trabalhador_atual and self.trabalhador_atual.isRunning():
@@ -1051,6 +1112,11 @@ class JanelaPainelAutomacao(QMainWindow):
                 border: 1px solid {PALETA_CORES['borda_forte']};
                 border-radius: 20px;
             }}
+            QFrame#rodapePainel {{
+                background: transparent;
+                border: none;
+                border-top: 1px solid {PALETA_CORES['borda_forte']};
+            }}
             QLabel#etiquetaTopo {{
                 background: #EAF2FC;
                 color: {PALETA_CORES['primaria']};
@@ -1064,6 +1130,15 @@ class JanelaPainelAutomacao(QMainWindow):
                 color: {PALETA_CORES['primaria']};
                 font-size: 24px;
                 font-weight: 800;
+            }}
+            QLabel#rodapeTitulo {{
+                color: {PALETA_CORES['texto_padrao']};
+                font-size: 12px;
+                font-weight: 800;
+            }}
+            QLabel#rodapeTexto {{
+                color: {PALETA_CORES['texto_mutado']};
+                font-size: 12px;
             }}
             QLabel#rotuloPercentual {{
                 color: {PALETA_CORES['primaria']};

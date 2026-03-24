@@ -205,7 +205,8 @@ QMainWindow
             ├── [2] QFrame#cartaoPadrao        — controles de execução
             ├── [3] QGridLayout                — grade de 4 estatísticas
             ├── [4] QFrame#cartaoPadrao        — progresso
-            └── [5] QFrame#cartaoPadrao        — histórico de logs (stretch=1)
+            ├── [5] QFrame#cartaoPadrao        — histórico de logs (stretch=1)
+            └── [6] QFrame#rodapePainel        — assinatura e suporte
 ```
 
 ### Ordem obrigatória das seções
@@ -215,6 +216,7 @@ QMainWindow
 3. Grade de estatísticas (4 colunas iguais)
 4. Progresso
 5. Histórico de execução (ocupa o espaço restante)
+6. Footer institucional com autoria e suporte
 
 ---
 
@@ -1262,3 +1264,29 @@ Todos os valores de `setSpacing()` e `setContentsMargins()` extraídos do códig
 | Linhas por página | `8` |
 | Altura de linha tabela | `60px` |
 | Altura cabeçalho tabela | `44px` |
+
+---
+
+## 26. Título e Footer Institucional
+
+### Título oficial da aplicação
+
+- Janela principal: `RPA REAJUSTE TABELAS VIGÊNCIA`
+- Título visível do cabeçalho: `RPA REAJUSTE TABELAS VIGÊNCIA`
+- Subtítulo do cabeçalho: `Painel operacional para cópia, vigência e reajuste em lote no ESL Cloud`
+
+### Footer institucional
+
+O rodapé deve permanecer discreto, legível e sempre no fim do painel principal.
+
+- Bloco esquerdo:
+  `RPA REAJUSTE TABELAS VIGÊNCIA`
+  `Automação desktop para cópia, vigência e reajuste de tabelas.`
+- Bloco direito:
+  `Desenvolvido por @valentelucass`
+  `Suporte: lucasmac.dev@gmail.com`
+
+### Link oficial de autoria
+
+- O texto `@valentelucass` no footer deve abrir:
+  `https://www.linkedin.com/in/dev-lucasandrade/`

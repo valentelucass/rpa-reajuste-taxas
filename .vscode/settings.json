@@ -1,17 +1,14 @@
 {
     "cSpell.enabled": false,
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "text": "Escreva a mensagem de commit em portugues do Brasil."
+        },
+        {
+            "text": "Prefira mensagens curtas, objetivas e no imperativo."
+        }
+    ],
+    "github.copilot.chat.localeOverride": "pt-br",
     "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
-    "python.terminal.activateEnvironment": true,
-    "python.analysis.extraPaths": [
-        "${workspaceFolder}",
-        "${workspaceFolder}/src"
-    ],
-    "python.analysis.exclude": [
-        "**/__pycache__",
-        "build",
-        "dist",
-        "logs",
-        "reports"
-    ],
-    "python.analysis.autoSearchPaths": true
+    "python.terminal.activateEnvironment": true
 }

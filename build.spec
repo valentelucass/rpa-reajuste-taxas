@@ -9,9 +9,8 @@ O resultado ficara em:
     dist/RPA-Tabela-cliente/RPA-Tabela-cliente.exe
 """
 
-import sys
 from pathlib import Path
-from PyInstaller.utils.hooks import collect_all, collect_submodules
+from PyInstaller.utils.hooks import collect_submodules
 
 ROOT = Path(SPECPATH)
 APP_DIST_NAME = "RPA-Tabela-cliente"
@@ -19,16 +18,26 @@ APP_DIST_NAME = "RPA-Tabela-cliente"
 # Selenium usa lazy imports em __getattr__, o PyInstaller nao detecta automaticamente
 selenium_hiddenimports = collect_submodules("selenium")
 
+
+def _data_file(path: Path, destino: str, opcional: bool = False):
+    if path.exists():
+        return [(str(path), destino)]
+    if opcional:
+        print(f"AVISO: recurso opcional ausente e sera ignorado no build: {path}")
+        return []
+    raise FileNotFoundError(f"Recurso obrigatorio ausente no build: {path}")
+
+
 a = Analysis(
     [str(ROOT / "main.py")],
     pathex=[str(ROOT)],
     binaries=[],
     datas=[
-        (str(ROOT / "public" / "app-icon.ico"), "public"),
-        (str(ROOT / "public" / "app-icon.png"), "public"),
-        (str(ROOT / "public" / "logo.png"), "public"),
-        (str(ROOT / "public" / "fonts" / "Manrope-Variable.ttf"), "public/fonts"),
-        (str(ROOT / "public" / "fonts" / "OFL-Manrope.txt"), "public/fonts"),
+        *_data_file(ROOT / "public" / "app-icon.ico", "public"),
+        *_data_file(ROOT / "public" / "app-icon.png", "public"),
+        *_data_file(ROOT / "public" / "logo.png", "public", opcional=True),
+        *_data_file(ROOT / "public" / "fonts" / "Manrope-Variable.ttf", "public/fonts"),
+        *_data_file(ROOT / "public" / "fonts" / "OFL-Manrope.txt", "public/fonts"),
     ],
     hiddenimports=[
         *selenium_hiddenimports,
