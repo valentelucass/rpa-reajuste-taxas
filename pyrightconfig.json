@@ -1,0 +1,25 @@
+{
+    "venvPath": ".",
+    "venv": ".venv",
+    "pythonVersion": "3.12",
+    "include": [
+        "main.py",
+        "config.py",
+        "src",
+        "tests"
+    ],
+    "exclude": [
+        "**/node_modules",
+        "**/.*",
+        ".venv",
+        "**/__pycache__",
+        "build",
+        "dist",
+        "logs",
+        "reports"
+    ],
+    "extraPaths": [
+        ".",
+        "src"
+    ]
+}
